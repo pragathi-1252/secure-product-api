@@ -1,53 +1,80 @@
+
 import { Router } from "express";
-import {productValidation, checkValidation,} from "../../middleware/validate";
+import {
+  productValidation,
+  checkValidation,
+} from "../../middleware/validate";
+import AppError from "../../utils/AppError";
+import type { Request, Response } from "express";
+
 const router = Router();
 
-router.get("/", (req, res) => {
+// Temporary in-memory product storage
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+  stock: number;
+  description: string;
+}
+
+let products: Product[] = [
+  {
+    id: 1,
+    name: "Laptop",
+    price: 55000,
+    category: "Electronics",
+    stock: 10,
+    description: "High-performance laptop",
+  },
+];
+
+let nextId = 2;
+
+// GET - Fetch all products
+router.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     statusCode: 200,
     message: "Products fetched successfully",
-    data: [],
+    data: products,
   });
 });
-router.get("/:id", (req, res) => {
-  const id = Number(req.params.id);
 
-  if (id !== 1) {
-    return res.status(404).json({
-      success: false,
-      statusCode: 404,
-      message: "Product not found",
-    });
+// GET - Fetch product by ID
+router.get("/:id", (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const product = products.find((p) => p.id === id);
+
+  if (!product) {
+    throw new AppError("Product not found", 404);
   }
 
   res.status(200).json({
     success: true,
     statusCode: 200,
     message: "Product fetched successfully",
-    data: {
-      id: 1,
-      name: "Laptop",
-      price: 55000,
-      category: "Electronics",
-      stock: 10,
-      description: "High-performance laptop",
-    },
+    data: product,
   });
 });
+
+// POST - Create a new product
 router.post(
   "/",
   productValidation,
   checkValidation,
-  (req, res) => {
-    const product = {
-      id: 2,
+  (req: Request, res: Response) => {
+    const product: Product = {
+      id: nextId++,
       name: req.body.name,
       price: req.body.price,
       category: req.body.category,
       stock: req.body.stock,
       description: req.body.description || "",
     };
+
+    products.push(product);
 
     res.status(201).json({
       success: true,
@@ -57,29 +84,30 @@ router.post(
     });
   }
 );
+
+// PUT - Update an existing product
 router.put(
   "/:id",
   productValidation,
   checkValidation,
-  (req, res) => {
+  (req: Request, res: Response) => {
     const id = Number(req.params.id);
+    const index = products.findIndex((p) => p.id === id);
 
-    if (id !== 1) {
-      return res.status(404).json({
-        success: false,
-        statusCode: 404,
-        message: "Product not found",
-      });
+    if (index === -1) {
+      throw new AppError("Product not found", 404);
     }
 
-    const updatedProduct = {
-      id: id,
+    const updatedProduct: Product = {
+      id,
       name: req.body.name,
       price: req.body.price,
       category: req.body.category,
       stock: req.body.stock,
       description: req.body.description || "",
     };
+
+    products[index] = updatedProduct;
 
     res.status(200).json({
       success: true,
@@ -89,17 +117,19 @@ router.put(
     });
   }
 );
-router.delete("/:id", (req, res) => {
-  const id = Number(req.params.id);
 
-  if (id !== 1) {
-    return res.status(404).json({
-      success: false,
-      statusCode: 404,
-      message: "Product not found",
-    });
+// DELETE - Remove a product
+router.delete("/:id", (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+  const index = products.findIndex((p) => p.id === id);
+
+  if (index === -1) {
+    throw new AppError("Product not found", 404);
   }
+
+  products.splice(index, 1);
 
   res.status(204).send();
 });
+
 export default router;
