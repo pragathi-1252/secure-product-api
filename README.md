@@ -1,38 +1,46 @@
-# Secure Product Catalog API
 
-## API Structure
+## Robust Error Handling & Logging
 
-The API is built using **Node.js, Express.js, and TypeScript** with API versioning.
+### Overview
+This project is a Secure Product Catalog REST API built using Node.js, Express.js, and TypeScript.
 
-Base URL:
+This update introduces centralized error handling, custom application errors, and structured logging.
 
-`/api/v1/products`
+### Error Handling
+- Custom `AppError` class for handling application errors.
+- Centralized error-handling middleware.
+- Consistent JSON error responses.
+- Unknown routes return a 404 error.
+- Stack traces are displayed only in development mode.
 
-The API provides the following endpoints:
+### Logging
+- Winston is used for application logging.
+- Morgan is integrated with Winston for HTTP request logging.
+- Error logs are stored in `logs/error.log`.
+- Combined logs are stored in `logs/combined.log`.
+- Timestamps are included in log entries.
 
-* `GET /products` – Get all products
-* `GET /products/:id` – Get a product by ID
-* `POST /products` – Create a product
-* `PUT /products/:id` – Update a product
-* `DELETE /products/:id` – Delete a product
+### Validation
+- Product request data is validated before processing.
+- Invalid product data returns a 422 response.
 
-## Validation Rules
+### API Base URL
+```text
+http://localhost:4000/api/v1/products
+```
 
-Product data is validated using **express-validator**.
+### Error Response Example
+```json
+{
+  "status": "fail",
+  "message": "Product not found"
+}
+```
 
-* `name` – Required, minimum 2 characters
-* `price` – Required and greater than 0
-* `category` – Required
-* `stock` – Required integer, minimum 0
-* `description` – Optional, maximum 500 characters
-
-Invalid input returns **422 Unprocessable Entity**.
-
-## Security Measures
-
-* **Helmet** is used for security headers.
-* JSON and URL-encoded request bodies are limited to **10KB**.
-* Input strings are sanitized using `trim()` and `escape()`.
-* **Rate limiting** allows 50 requests per 10 minutes per IP.
-* Requests exceeding the limit return **429 Too Many Requests**.
-* A centralized error handler provides consistent error responses.
+### Technologies Used
+- Node.js
+- Express.js
+- TypeScript
+- Winston
+- Morgan
+- Express Validator

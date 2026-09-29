@@ -1,4 +1,3 @@
-
 import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
@@ -39,9 +38,13 @@ app.use(
 
 // Morgan HTTP request logging
 app.use(morgan("dev", { stream: morganStream }));
+//app.use(morgan("short", { stream: morganStream }));
+//app.use(morgan("tiny", { stream: morganStream }));
+// Apply rate limiter to all API routes
+app.use("/api/v1", apiLimiter);
 
 // Product routes
-app.use("/api/v1/products", apiLimiter, productsRouter);
+app.use("/api/v1/products", productsRouter);
 
 // Test route
 app.get("/", (req, res) => {
@@ -49,6 +52,10 @@ app.get("/", (req, res) => {
     success: true,
     message: "Secure Product Catalog API is running",
   });
+});
+// // Temporary 500 error test route
+app.get("/test-error", (req, res, next) => {
+  next(new Error("Test Internal Server Error"));
 });
 
 // Catch-all 404 handler
