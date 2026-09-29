@@ -1,5 +1,7 @@
 import { body, validationResult } from "express-validator";
 
+import type { Request, Response, NextFunction } from "express";
+
 export const productValidation = [
   body("name")
     .trim()
@@ -33,7 +35,11 @@ export const productValidation = [
     .withMessage("Description must not exceed 500 characters"),
 ];
 
-export const checkValidation = (req: any, res: any, next: any) => {
+export const checkValidation = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

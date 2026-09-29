@@ -8,13 +8,12 @@ const errorHandler = (
   },
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
+  void next;
   const statusCode = err.statusCode || 500;
 
-  const message = err.isOperational
-    ? err.message
-    : "Something went wrong";
+  const message = err.isOperational ? err.message : "Something went wrong";
 
   logger.error(`${req.method} ${req.originalUrl} - ${err.message}`, {
     method: req.method,

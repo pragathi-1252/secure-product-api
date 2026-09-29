@@ -2,15 +2,16 @@ import express from "express";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
-
+import cors from "cors";
 import productsRouter from "./routes/v1/products";
 import errorHandler from "./middleware/errorHandler";
 import AppError from "./utils/AppError";
 import morganStream from "./utils/morganStream";
-
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
 
-const PORT = 4000;
+const PORT = Number(process.env.PORT) || 4000;
 
 const apiLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
@@ -23,6 +24,13 @@ const apiLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
 
 // Security middleware
 app.use(helmet());
@@ -33,7 +41,7 @@ app.use(
   express.urlencoded({
     extended: true,
     limit: "10kb",
-  })
+  }),
 );
 
 // Morgan HTTP request logging
@@ -60,9 +68,7 @@ app.get("/test-error", (req, res, next) => {
 
 // Catch-all 404 handler
 app.use((req, res, next) => {
-  next(
-    new AppError(`Route ${req.originalUrl} not found`, 404)
-  );
+  next(new AppError(`Route ${req.originalUrl} not found`, 404));
 });
 
 // Centralized error handler

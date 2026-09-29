@@ -15,15 +15,9 @@
         "url": {
           "raw": "http://localhost:4000/api/v1/products",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "v1",
-            "products"
-          ]
+          "path": ["api", "v1", "products"]
         }
       },
       "response": []
@@ -36,16 +30,9 @@
         "url": {
           "raw": "http://localhost:4000/api/v1/products/1",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "v1",
-            "products",
-            "1"
-          ]
+          "path": ["api", "v1", "products", "1"]
         }
       },
       "response": []
@@ -67,15 +54,9 @@
         "url": {
           "raw": "http://localhost:4000/api/v1/products",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "v1",
-            "products"
-          ]
+          "path": ["api", "v1", "products"]
         }
       },
       "response": []
@@ -97,15 +78,9 @@
         "url": {
           "raw": "http://localhost:4000/api/v1/products",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "v1",
-            "products"
-          ]
+          "path": ["api", "v1", "products"]
         }
       },
       "response": []
@@ -127,16 +102,9 @@
         "url": {
           "raw": "http://localhost:4000/api/v1/products/1",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "v1",
-            "products",
-            "1"
-          ]
+          "path": ["api", "v1", "products", "1"]
         }
       },
       "response": []
@@ -160,16 +128,9 @@
         "url": {
           "raw": "http://localhost:4000/api/v1/products/1",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
+          "host": ["localhost"],
           "port": "4000",
-          "path": [
-            "api",
-            "v1",
-            "products",
-            "1"
-          ]
+          "path": ["api", "v1", "products", "1"]
         }
       },
       "response": []
